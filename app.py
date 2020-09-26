@@ -244,14 +244,33 @@ def create_venue_form():
 
 @app.route('/venues/create', methods=['POST'])
 def create_venue_submission():
-  # TODO: insert form data as a new Venue record in the db, instead
-  # TODO: modify data to be the data object returned from db insertion
-
-  # on successful db insert, flash success
-  flash('Venue ' + request.form['name'] + ' was successfully listed!')
-  # TODO: on unsuccessful db insert, flash an error instead.
-  # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
-  # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
+  # TODO: insert form data as a new Venue record in the db, instead (DONE)
+  # TODO: modify data to be the data object returned from db insertion (DONE)
+  # on successful db insert, flash success (DONE)
+  # TODO: on unsuccessful db insert, flash an error instead. (DONE)
+  try: 
+    form = VenueForm()
+    venue = Venue(
+      name = form.name.data,
+      city = form.city.data,
+      state = form.state.data,
+      address = form.address.data,
+      phone = form.phone.data,
+      image_link = form.image_link.data,
+      facebook_link = form.facebook_link.data,
+      genres = form.genres.data,
+      website = form.website.data,
+      seeking_talent = form.seeking_talent.data,
+      seeking_description = form.seeking_description.data
+    )
+    db.session.add(venue)
+    db.session.commit()
+    flash('Venue ' + request.form['name'] + ' was successfully listed!')
+  except:
+    db.session.rollback()
+    flash('An error occurred. Venue ' + request.form['name'] + ' could not be listed.')
+  finally:
+    db.session.close()
   return render_template('pages/home.html')
 
 @app.route('/venues/<venue_id>', methods=['DELETE'])
@@ -438,13 +457,31 @@ def create_artist_form():
 @app.route('/artists/create', methods=['POST'])
 def create_artist_submission():
   # called upon submitting the new artist listing form
-  # TODO: insert form data as a new Venue record in the db, instead
-  # TODO: modify data to be the data object returned from db insertion
+  # TODO: insert form data as a new Venue record in the db, instead (DONE)
+  # TODO: modify data to be the data object returned from db insertion (DONE)
+  # on successful db insert, flash success (DONE)
+  # TODO: on unsuccessful db insert, flash an error instead. (DONE)
+  # e.g., flash('An error occurred. Artist ' + data.name + ' could not be listed.'(DONE)
 
-  # on successful db insert, flash success
-  flash('Artist ' + request.form['name'] + ' was successfully listed!')
-  # TODO: on unsuccessful db insert, flash an error instead.
-  # e.g., flash('An error occurred. Artist ' + data.name + ' could not be listed.')
+  try: 
+    form = ArtistForm()
+    artist = Artist(
+      name = form.name.data, 
+      city = form.city.data, 
+      state = form.city.data,
+      phone = form.phone.data, 
+      genres = form.genres.data, 
+      image_link = form.image_link.data, 
+      facebook_link = form.facebook_link.data
+    )
+    db.session.add(artist)
+    db.session.commit()
+    flash('Artist ' + request.form['name'] + ' was successfully listed!')
+  except:
+    db.session.rollback()
+    flash('An error occurred. Artist ' + request.form['name'] + ' could not be listed.')
+  finally: 
+    db.session.close()
   return render_template('pages/home.html')
 
 
@@ -502,14 +539,26 @@ def create_shows():
 
 @app.route('/shows/create', methods=['POST'])
 def create_show_submission():
-  # called to create new shows in the db, upon submitting new show listing form
-  # TODO: insert form data as a new Show record in the db, instead
+  # called to create new shows in the db, upon submitting new show listing form (DONE)
+  # TODO: insert form data as a new Show record in the db, instead (DONE)
+  # on successful db insert, flash success (DONE)
+  # TODO: on unsuccessful db insert, flash an error instead. (DONE)
+  # e.g., flash('An error occurred. Show could not be listed.') (DONE)
 
-  # on successful db insert, flash success
-  flash('Show was successfully listed!')
-  # TODO: on unsuccessful db insert, flash an error instead.
-  # e.g., flash('An error occurred. Show could not be listed.')
-  # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
+  try: 
+    show = Show(
+      artist_id=request.form['artist_id'],
+      venue_id=request.form['venue_id'],
+      start_time=request.form['start_time']
+    )
+    db.session.add(show)
+    db.session.commit()
+    flash('Show was successfully listed!')
+  except: 
+    db.session.rollback()
+    flash('An error occurred. Show could not be listed.')
+  finally: 
+    db.session.close()
   return render_template('pages/home.html')
 
 @app.errorhandler(404)
