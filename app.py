@@ -463,13 +463,12 @@ def create_artist_submission():
   try: 
     form = ArtistForm()
     artist = Artist(
-      name = form.name.data, 
-      city = form.city.data, 
-      state = form.city.data,
-      phone = form.phone.data, 
-      genres = form.genres.data, 
-      image_link = form.image_link.data, 
-      facebook_link = form.facebook_link.data
+      name = request.form['name'], 
+      city = request.form['city'], 
+      state = request.form['state'],
+      phone = request.form['phone'], 
+      genres = request.form['genres'], 
+      facebook_link = request.form['facebook_link']
     )
     db.session.add(artist)
     db.session.commit()
