@@ -248,20 +248,17 @@ def create_venue_submission():
   # TODO: modify data to be the data object returned from db insertion (DONE)
   # on successful db insert, flash success (DONE)
   # TODO: on unsuccessful db insert, flash an error instead. (DONE)
+  
   try: 
     form = VenueForm()
     venue = Venue(
-      name = form.name.data,
-      city = form.city.data,
-      state = form.state.data,
-      address = form.address.data,
-      phone = form.phone.data,
-      image_link = form.image_link.data,
-      facebook_link = form.facebook_link.data,
-      genres = form.genres.data,
-      website = form.website.data,
-      seeking_talent = form.seeking_talent.data,
-      seeking_description = form.seeking_description.data
+      name = request.form['name'],
+      city = request.form['city'],
+      state = request.form['state'],
+      address = request.form['address'],
+      phone = request.form['phone'],
+      facebook_link = request.form['facebook_link'],
+      genres = request.form['genres'],
     )
     db.session.add(venue)
     db.session.commit()
