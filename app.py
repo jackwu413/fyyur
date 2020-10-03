@@ -289,8 +289,14 @@ def show_venue(venue_id):
     "city": venue.city, 
     "state": venue.state, 
     "phone": venue.phone, 
-    "facebook_link": venue.facebook_link
+    # "image_link": venue.image_link,
+    "website": venue.website,
+    "facebook_link": venue.facebook_link,
+    "seeking_talent": venue.seeking_talent,
+    "seeking_description": venue.seeking_description,
   }
+
+  print(data['genres'])
 
   return render_template('pages/show_venue.html', venue=data)
 
@@ -318,7 +324,7 @@ def create_venue_submission():
       address = request.form['address'],
       phone = request.form['phone'],
       facebook_link = request.form['facebook_link'],
-      genres = request.form['genres'],
+      genres = request.form.getlist('genres'),
     )
     db.session.add(venue)
     db.session.commit()
