@@ -519,7 +519,19 @@ def show_artist(artist_id):
   # data = list(filter(lambda d: d['id'] == artist_id, [data1, data2, data3]))[0]
 
   artist = Artist.query.filter_by(id=artist_id).first()
-  # shows = Show.query.filter_by(venue_id=venue_id).all()
+  shows = Show.query.filter_by(artist_id=artist_id).all()
+  upcoming_shows = []
+  past_shows = [] 
+  for show in shows: 
+    data = {
+      "venue_id": show.venue_id, 
+      "venue_name": show.venue.name, 
+      "start_time": format_datetime(str(show.start_time))
+    } 
+    if show.start_time > datetime.now(): 
+      upcoming_shows.append(data)
+    else: 
+      past_shows.append(data)
 
   data = {
     "id": artist.id, 
@@ -528,7 +540,11 @@ def show_artist(artist_id):
     "city": artist.city, 
     "state": artist.state, 
     "phone": artist.phone, 
-    "facebook_link": artist.facebook_link
+    "facebook_link": artist.facebook_link, 
+    "past_shows": past_shows, 
+    "upcoming_shows": upcoming_shows, 
+    "past_shows_count": len(past_shows), 
+    "upcoming_shows_count": len(upcoming_shows)
   }
 
   return render_template('pages/show_artist.html', artist=data)
