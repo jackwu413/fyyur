@@ -82,10 +82,17 @@
 			 class="btn btn-primary btn-lg btn-block">Edit Venue</a>
 		</div>
 		<div class="col-sm-3">
-			<a href="{{ url_for('delete_venue', venue_id=venue.id) }}"
-			   class="btn btn-primary btn-lg btn-block">Delete Venue</a>
-		  </div>
+			<button class="btn btn-primary btn-lg btn-block" onclick="deleteVenue({{ venue.id }})">Delete venue</button>
+		</div>
 	  </div>
 </section>
+<script>
+	deleteVenue = id => {
+  return fetch(`/venues/${id}`, {
+    method: 'DELETE'
+  }).then(() => window.location = '/venues')
+      .catch(e => console.log('error deleting', e))
+}
+</script>
 {% endblock %}
 
